@@ -1,2 +1,2 @@
-# ALBA-OSSR
-ALBA's Open Source In the Zone Robot
+# ALBA-In the Zone
+ALBA's Competition In the Zone Robot
