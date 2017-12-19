@@ -19,7 +19,7 @@
 
 /** @file main.h
  * @brief Header file for global functions
- * 
+ *
  * Any experienced C or C++ programmer knows the importance of header files. For those who
  * do not, a header file allows multiple files to reference functions in other files without
  * necessarily having to see the code (and therefore causing a multiple definition). To make
@@ -131,8 +131,8 @@ void initialize();
  *
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
-void operatorControl(); 
- 
+void operatorControl();
+
 #define encRead	encoderGet(armEnc)
 extern Encoder armEnc;
 
@@ -179,7 +179,7 @@ void liftTask(void * parameter);
 
 typedef struct{
 	long error, derivative, P, target, pos;
-	short height;
+	short height, bottom;
 	float kP;
 }PID;
 PID arm;
@@ -188,11 +188,13 @@ void checkStackRelease(void);
 void updateArmTarget(void);
 
 void closeClaw(int close);
-int clawPosition;
+extern int clawPosition;
 
 //auton routines
 void standardAuton(void);
 void scoreMobileGoal(void);
+
+int sign(int var);
 
 // End C++ export structure
 #ifdef __cplusplus

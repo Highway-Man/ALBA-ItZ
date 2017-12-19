@@ -45,6 +45,20 @@ void rDriveSet(int control) {
 	motorSet(frDrive, -control);
 	motorSet(arDrive, -control);
 }
+int lDriveGet(){
+	return motorGet(flDrive);
+}
+int rDriveGet(){
+	return -motorGet(frDrive);
+}
+void lDriveBrake(){
+	motorSet(flDrive, -12);
+	motorSet(alDrive, 12);
+}
+void rDriveBrake(){
+	motorSet(frDrive, -12);
+	motorSet(arDrive, 12);
+}
 void chainbarSet(int control) {
 	motorSet(olArm, -control);
 	motorSet(ilArm, control);
@@ -85,6 +99,10 @@ void closeClaw(int close) {
 void fourbarSet(int control) {
 	motorSet(fourbar, control);
 }
+void closeGate(int close){
+	digitalWrite(3,!close);
+	digitalWrite(4,!close);
+}
 
 void prepChainbar() {
 	chainbarSet(-50);
@@ -96,16 +114,18 @@ void prepChainbar() {
 
 const int armHeightMax = 8;
 void updateArmTarget() {
-	if (arm.height == 0)
+	if (arm.height == 0 && arm.bottom == 0)
 		arm.target = -10;//-60
+	else if(arm.height == 0 && arm.bottom == 1)
+		arm.target = 65;
 	else if (arm.height == 1)
-		arm.target = 290;//840
+		arm.target = 280;//840
 	else if (arm.height == 2)
-		arm.target = 275;//800
+		arm.target = 265;//800
 	else if (arm.height == 3)
-		arm.target = 260;//775
+		arm.target = 250;//775
 	else if (arm.height == 4)
-		arm.target = 250;//745
+		arm.target = 240;//745
 	else if (arm.height == 5)
 		arm.target = 230;//700
 	else if (arm.height == 6)
@@ -119,11 +139,14 @@ void updateArmTarget() {
 void checkStackRelease() {
 	static int waitGoDown = 0;
 	//890, 850, 810, 785, 765, 750, 733, 670,
-	if (arm.error < 25 && arm.target > 0) {
+	if (arm.error < 30 && arm.target > 100) {
 		clawPosition = 0;
 		if(waitGoDown>3){
 			waitGoDown=0;
-			arm.target = -10;
+			if(arm.bottom == 0)
+				arm.target = -10;
+			else
+				arm.target = 60;
 		}
 		waitGoDown++;
 	}
@@ -144,16 +167,17 @@ void operatorControl() {
 	//scoreMobileGoal();
 	//autonomous();
 	arm.height=0;
+	arm.bottom=0;
 	updateArmTarget();
 	//prepChainbar();
 	//autonomous();
 	while (true) {
 		//set drive motors with a deadband of 5
-		if (abs(L_JOY) > 5)
+		if (abs(L_JOY) > 9)
 			lDriveSet(L_JOY);
 		else
 			lDriveSet(0);
-		if (abs(R_JOY) > 5)
+		if (abs(R_JOY) > 9)
 			rDriveSet(R_JOY);
 		else
 			rDriveSet(0);
@@ -194,8 +218,11 @@ void operatorControl() {
 			updateArmTarget();
 			debounce = 1;
 		}else if(LEFT && debounce != -2){
-			arm.height--;
-			updateArmTarget();
+			arm.bottom = abs(arm.bottom-1);
+			if(arm.bottom == 0)
+				arm.target = -10;
+			else
+				arm.target = 65;
 			debounce = -2;
 		}
 		else if(RIGHT){
@@ -221,8 +248,11 @@ void operatorControl() {
 		} else if (DOWN) {
 			fourbarSet(-127);
 			fourbarLast = -127;
-		} else if (fourbarLast > 0)
+			closeGate(0);
+		} else if (fourbarLast > 0){
 			fourbarSet(10);
+			closeGate(1);
+		}
 		else
 			fourbarSet(-10);
 
@@ -234,7 +264,7 @@ void operatorControl() {
 //			standardAuton();
 
 		//print encoder value to terminal
-		printf("%d, ", encoderGet(armEnc));
+		printf("H%d, ", encoderGet(armEnc));
 
 		delay(25);
 	}

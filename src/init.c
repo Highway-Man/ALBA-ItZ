@@ -44,6 +44,10 @@
   * The purpose of this function is solely to set the default pin modes (pinMode()) and port states (digitalWrite()) of limit switches, push buttons, and solenoids. It can also safely configure a UART port (usartOpen()) but cannot set up an LCD (lcdInit()).
   */
 void initializeIO() {
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  digitalWrite(3,LOW);
+  digitalWrite(4,LOW);
 
 }
 
@@ -59,6 +63,10 @@ void initializeIO() {
 Encoder armEnc;
 
 
- void initialize() { 
+ void initialize() {
 	 armEnc = encoderInit(1,2,false);
+}
+
+int sign(int var){
+  return var/abs(var);
 }
