@@ -35,69 +35,7 @@
 ********************************************************************************/
 
 #include "main.h"
-
-//set both sides of drive
-void driveSet(int left, int right){
-	lDriveSet(left);
-	rDriveSet(right);
-}
-
-//wait for lift to be within 10 ticks of target
-void waitForLift(int target, int margin){
-	while(abs(encoderGet(armEnc) - target) > margin)
-		delay(20);
-}
-
-void positionController(){
-	arm.kP = 1.5;//.86
-	arm.pos = encoderGet(armEnc);
-	arm.error = arm.target - arm.pos;
-	arm.P = arm.error*arm.kP;
-	if(abs(arm.P) > 100)
-		arm.P = 110*arm.P/abs(arm.P);
-	chainbarControl(arm.P);
-}
-int gTarget;
-void liftTask(void * parameter){
-	while(1){
-		positionController();
-		checkStackRelease();
-		closeClaw(clawPosition);
-		printf("%d, %d, %d; ", arm.target, arm.pos, motorGet(ilArm));
-		delay(25);
-	}
-}
-
-void moveLift(int target, int margin){
-	gTarget = target;
-	waitForLift(target, margin);
-}
-
-void moveFourbar(int up){
-	if(up)
-		fourbarSet(127);
-	else
-		fourbarSet(-127);
-	delay(700);
-	if(up)
-		fourbarSet(5);
-	else
-		fourbarSet(-10);
-}
-
-void moveClaw(int close){
-	if(close){
-		clawSet(127);
-		delay(200);
-		clawSet(15);
-	}
-	else{
-		clawSet(-127);
-		delay(150);
-		clawSet(-10);
-	}
-}
-//890, 850, 810, 785, 765, 750, 733, 670,
+#include "subsystems.h"
 
 //deploy intake, raise lift & drive to fence, outtake
 //only a framework; will need to be adjusted on actual field
@@ -184,6 +122,6 @@ void driveStr8(){
 * The autonomous task may exit, unlike operatorControl() which should never exit. If it does so, the robot will await a switch to another mode or disable/enable cycle.
 */
 void autonomous() {
-	//scoreMobileGoal();
+	scoreMobileGoal();
 	driveStr8();
 }

@@ -166,29 +166,7 @@ typedef enum {
 #define X	joystickGetDigital(1,8,JOY_DOWN)
 #define V	joystickGetDigital(1,8, JOY_UP)
 
-//subsystem motor functions
-void lDriveSet(int control);
-void rDriveSet(int control);
-void chainbarSet(int control);
-void fourbarSet(int control);
-void clawSet(int control);
-void chainbarControl(int target);
 
-extern int gTarget;
-void liftTask(void * parameter);
-
-struct PIDcont{
-	long error, derivative, P, target, pos;
-	short height, bottom;
-	float kP;
-};
-extern struct PIDcont arm;
-void positionController(void);
-void checkStackRelease(void);
-void updateArmTarget(void);
-
-void closeClaw(int close);
-extern int clawPosition;
 
 //auton routines
 void standardAuton(void);
