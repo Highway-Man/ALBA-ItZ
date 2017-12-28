@@ -7,9 +7,9 @@ void Pid::init(float P, float D, float I, short dMax, double (*sensor)(void), vo
   kD = D;
   kI = I;
   input = sensor;
-  pError=0;
+  pError=0.0;
   pTime = millis();
-  integral = 0;
+  integral = 0.0;
   output = motors;
   deltaMax = dMax;
 }

@@ -2,8 +2,10 @@
 #define _SUBSYSTEMS_H
 
 //subsystem motor functions
-void lDriveSet(int control);
-void rDriveSet(int control);
+void lDriveSet(short control);
+void rDriveSet(short control);
+void driveForward(short control);
+void driveTurn(short control);
 void chainbarSet(int control);
 void fourbarSet(int control);
 void clawSet(int control);

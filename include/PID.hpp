@@ -25,9 +25,9 @@ void (*output)(short);
 short controlLast, slewRate;
 public:
   float kP, kD, kI;
-  static double error, integral, derivative, pError;
-  static float target;
-  static double position, velocity;
+  float error, integral, derivative, pError;
+  float target;
+  double position, velocity;
   short deltaMax, control;
   void init(float P, float D, float I, short dMax, double (*sensor)(void), void (*motors)(short));
   void calc(void);

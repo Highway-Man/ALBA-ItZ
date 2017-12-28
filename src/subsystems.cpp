@@ -2,13 +2,21 @@
 #include "main.h"
 
 //functions to set our subsystem motors to control values. Some motors need to be reversed
-void lDriveSet(int control) {
+void lDriveSet(short control) {
 	motorSet(flDrive, control);
 	motorSet(alDrive, control);
 }
-void rDriveSet(int control) {
+void rDriveSet(short control) {
 	motorSet(frDrive, -control);
 	motorSet(arDrive, -control);
+}
+void driveForward(short control){
+	lDriveSet(control);
+	rDriveSet(control);
+}
+void driveTurn(short control){
+	lDriveSet(-control);
+	rDriveSet(control);
 }
 int lDriveGet(){
 	return motorGet(flDrive);
