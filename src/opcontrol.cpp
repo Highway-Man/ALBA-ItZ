@@ -111,7 +111,7 @@ void prepChainbar() {
 	delay(50);
 	encoderReset(armEnc);
 }
-
+struct PIDcont arm;
 const int armHeightMax = 8;
 void updateArmTarget() {
 	if (arm.height == 0 && arm.bottom == 0)

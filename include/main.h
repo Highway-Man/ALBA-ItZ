@@ -177,12 +177,12 @@ void chainbarControl(int target);
 extern int gTarget;
 void liftTask(void * parameter);
 
-typedef struct{
+struct PIDcont{
 	long error, derivative, P, target, pos;
 	short height, bottom;
 	float kP;
-}PID;
-PID arm;
+};
+extern struct PIDcont arm;
 void positionController(void);
 void checkStackRelease(void);
 void updateArmTarget(void);

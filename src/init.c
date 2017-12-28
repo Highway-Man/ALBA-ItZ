@@ -66,7 +66,3 @@ Encoder armEnc;
  void initialize() {
 	 armEnc = encoderInit(1,2,false);
 }
-
-int sign(int var){
-  return var/abs(var);
-}
