@@ -70,7 +70,8 @@ Pid turn;
 
  void initialize() {
 	 armEnc = encoderInit(1,2,false);
+   imuInit();
 
    //drive::init();
-   turn.init(1.5,2.0,0.1, 127, imuGet, driveTurn);
+   turn.init(1.0,0.0,0.0, 127, orientationGet, driveTurn);
 }

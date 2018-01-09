@@ -36,6 +36,8 @@
 
 #include "main.h"
 #include "subsystems.h"
+#include "PID.hpp"
+#include "imu.h"
 
 /**
  * Runs the user operator control code.
@@ -49,6 +51,7 @@
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
+	//turn.moveTo(90,1);
 	//scoreMobileGoal();
 	//autonomous();
 	arm.height=0;
@@ -88,8 +91,10 @@ void operatorControl() {
 		 chainbarControl(-127);
 		 chainbarLast = -1;
 		 }
-		 else if(encoderGet(armEnc) < 30)
-		 chainbarControl(-15);
+		 else if(encoderGet(armEnc) < 15 && chainbarLast < 0)
+		 chainbarControl(-10);
+		 else if(encoderGet(armEnc) < 150 || chainbarLast > 0)
+		 	chainbarControl(10);
 		 else
 		 chainbarControl(-0*chainbarLast);
 		}
@@ -141,6 +146,13 @@ void operatorControl() {
 		else
 			fourbarSet(-10);
 
+		if(O)
+			brakeSet(127);
+		else if (H)
+			brakeSet(-127);
+		else
+			brakeSet(0);
+
 		if (X)
 			encoderReset(armEnc);
 
@@ -149,8 +161,9 @@ void operatorControl() {
 //			standardAuton();
 
 		//print encoder value to terminal
-		printf("H%d, ", encoderGet(armEnc));
+		turn.calc();
+		printf("%f, ", turn.error);
 
-		delay(25);
+		delay(20);
 	}
 }

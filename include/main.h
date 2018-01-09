@@ -140,12 +140,12 @@ extern Encoder armEnc;
 typedef enum {
 	ilArm = 1,
 	olArm,
-	alDrive,
-	flDrive,
-	fourbar,
+	lDrive,
+	lMogo,
+	brake,
 	claw,
-	frDrive,
-	arDrive,
+	rMogo,
+	rDrive,
 	orArm,
 	irArm,
 
@@ -165,6 +165,9 @@ typedef enum {
 #define RIGHT	joystickGetDigital(1,7,JOY_RIGHT)
 #define X	joystickGetDigital(1,8,JOY_DOWN)
 #define V	joystickGetDigital(1,8, JOY_UP)
+#define H	joystickGetDigital(1,8, JOY_LEFT)
+#define O	joystickGetDigital(1,8, JOY_RIGHT)
+
 
 
 

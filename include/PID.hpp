@@ -36,5 +36,7 @@ public:
   void moveToUntil(float tar, float thresh, int ms);
 
 };
+extern Pid turn;
+extern Pid drive;
 
 #endif

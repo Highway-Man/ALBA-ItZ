@@ -36,6 +36,7 @@
 
 #include "main.h"
 #include "subsystems.h"
+#include "PID.hpp"
 
 //deploy intake, raise lift & drive to fence, outtake
 //only a framework; will need to be adjusted on actual field

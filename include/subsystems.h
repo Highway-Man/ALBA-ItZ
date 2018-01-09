@@ -10,6 +10,7 @@ void chainbarSet(int control);
 void fourbarSet(int control);
 void clawSet(int control);
 void chainbarControl(int target);
+void brakeSet(int control);
 
 extern int gTarget;
 void liftTask(void * parameter);

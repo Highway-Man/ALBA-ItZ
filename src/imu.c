@@ -359,3 +359,18 @@ double imuGet(){
   imuUpdate();
   return heading;
 }
+
+double orientationGet(){
+	static double angle;
+	static double angleLast = 0;
+	static double offset =0;
+	angle = imuGet();
+	if((angle - angleLast) > 270){
+		offset += -360;
+	}
+	if((angle - angleLast) < -270){
+		offset += 360;
+	}
+	angleLast = angle;
+	return angle+offset;
+}

@@ -1,6 +1,7 @@
 #include "API.h"
 #include "PID.hpp"
 #include "main.h"
+#include "math.h"
 
 void Pid::init(float P, float D, float I, short dMax, double (*sensor)(void), void (*motors)(short)){
   kP = P;
@@ -20,10 +21,11 @@ void Pid::calc(void){
 
   dt = t-pTime;
   derivative = (error - pError)/dt;
+  velocity = derivative*1000;
 
   integral += error*dt;
 
-  control = kP*error + kD*derivative + kI*integral;
+  control = kP*error;// + kD*derivative + kI*integral;
 
   pTime = t;
 
@@ -38,9 +40,10 @@ void Pid::set(short value){
 void Pid::moveTo(float tar, float thresh){
   target = tar;
   calc();
-  while(error < thresh){
+  while(fabs(error) > thresh || fabs(velocity) > 0.001){
     calc();
     set(control);
+    printf("%f, %d\n", error, control);
     delay(delayTime);
   }
 }

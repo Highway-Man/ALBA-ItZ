@@ -9,6 +9,7 @@ void imuInit();
 void imuShutdown();
 void imuUpdate();
 double imuGet();
+double orientationGet();
 
 #ifdef __cplusplus
 }

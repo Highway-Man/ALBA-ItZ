@@ -3,34 +3,30 @@
 
 //functions to set our subsystem motors to control values. Some motors need to be reversed
 void lDriveSet(short control) {
-	motorSet(flDrive, control);
-	motorSet(alDrive, control);
+	motorSet(lDrive, control);
 }
 void rDriveSet(short control) {
-	motorSet(frDrive, -control);
-	motorSet(arDrive, -control);
+	motorSet(rDrive, -control);
 }
 void driveForward(short control){
 	lDriveSet(control);
 	rDriveSet(control);
 }
 void driveTurn(short control){
-	lDriveSet(-control);
-	rDriveSet(control);
+	lDriveSet(control);
+	rDriveSet(-control);
 }
 int lDriveGet(){
-	return motorGet(flDrive);
+	return motorGet(lDrive);
 }
 int rDriveGet(){
-	return -motorGet(frDrive);
+	return -motorGet(rDrive);
 }
 void lDriveBrake(){
-	motorSet(flDrive, -12);
-	motorSet(alDrive, 12);
+	motorSet(lDrive, -12);
 }
 void rDriveBrake(){
-	motorSet(frDrive, -12);
-	motorSet(arDrive, 12);
+	motorSet(rDrive, -12);
 }
 void chainbarSet(int control) {
 	motorSet(olArm, -control);
@@ -70,11 +66,15 @@ void closeClaw(int close) {
 	last = close;
 }
 void fourbarSet(int control) {
-	motorSet(fourbar, control);
+	motorSet(lMogo, control);
+	motorSet(rMogo, control);
 }
 void closeGate(int close){
 	digitalWrite(3,!close);
 	digitalWrite(4,!close);
+}
+void brakeSet(int control){
+	motorSet(brake, control);
 }
 
 void prepChainbar() {
