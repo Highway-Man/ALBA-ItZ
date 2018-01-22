@@ -3,6 +3,12 @@
 
 class Pid{
 private:
+const short delayTime = 10;
+double dt, t, pTime;
+double (*input)(void);
+void (*output)(short);
+short controlLast, slewRate;
+public:
   const unsigned short lin[128] = {
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
   0, 21, 21, 21, 22, 22, 22, 23, 24, 24,
@@ -18,12 +24,6 @@ private:
  80, 81, 83, 84, 84, 86, 86, 87, 87, 88,
  88, 89, 89, 90, 90,127,127,127
 };
-const short delayTime = 10;
-double dt, t, pTime;
-double (*input)(void);
-void (*output)(short);
-short controlLast, slewRate;
-public:
   float kP, kD, kI;
   float error, integral, derivative, pError;
   float target;

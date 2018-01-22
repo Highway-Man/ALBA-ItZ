@@ -3,7 +3,7 @@
 #include "main.h"
 #include "math.h"
 
-void Pid::init(float P, float D, float I, short dMax, double (*sensor)(void), void (*motors)(short)){
+void Pid::init(float P, float I, float D, short dMax, double (*sensor)(void), void (*motors)(short)){
   kP = P;
   kD = D;
   kI = I;
@@ -18,17 +18,18 @@ void Pid::calc(void){
   position = input();
   t = millis();
   error = target-position;
-
   dt = t-pTime;
-  derivative = (error - pError)/dt;
-  velocity = derivative*1000;
+  if(error != pError || dt > 100){
+    derivative = (error - pError)/dt;
+    velocity = derivative*1000;
 
-  integral += error*dt;
+    integral += error*dt;
 
-  control = kP*error;// + kD*derivative + kI*integral;
+    pTime = t;
+    pError = error;
+  }
 
-  pTime = t;
-
+  control = kP*error + kD*derivative;// + kI*integral;
 }
 void Pid::set(short value){
   slewRate = value - controlLast;
@@ -40,11 +41,16 @@ void Pid::set(short value){
 void Pid::moveTo(float tar, float thresh){
   target = tar;
   calc();
+  int i=0;
   while(fabs(error) > thresh || fabs(velocity) > 0.001){
     calc();
     set(control);
-    printf("%f, %d\n", error, control);
+    if(i>4){
+      printf("%f, %f, %d\n", error, derivative, control);
+      i=0;
+    }
     delay(delayTime);
+    i++;
   }
 }
 void Pid::moveToUntil(float tar, float thresh, int ms){

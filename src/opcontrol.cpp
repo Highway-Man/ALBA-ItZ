@@ -39,6 +39,27 @@
 #include "PID.hpp"
 #include "imu.h"
 
+void calibrateIMU(){
+	for(int i=0;i<2000;i+=10){
+		turn.calc();
+		printf("%f;", turn.position);
+		delay(10);
+	}
+	driveTurn(88);
+	for(int i=0;i<2000;i+=10){
+		turn.calc();
+		printf("%f;", turn.position);
+		delay(10);
+	}
+	driveTurn(37);
+	for(int i=0;i<2000;i+=10){
+		turn.calc();
+		printf("%f;", turn.position);
+		delay(10);
+	}
+
+}
+
 /**
  * Runs the user operator control code.
  *
@@ -51,7 +72,8 @@
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
-	//turn.moveTo(90,1);
+	//calibrateIMU();
+	turn.moveTo(90,15);
 	//scoreMobileGoal();
 	//autonomous();
 	arm.height=0;
@@ -162,7 +184,7 @@ void operatorControl() {
 
 		//print encoder value to terminal
 		turn.calc();
-		printf("%f, ", turn.error);
+		//printf("%f, ", turn.error);
 
 		delay(20);
 	}

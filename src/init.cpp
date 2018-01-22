@@ -73,5 +73,6 @@ Pid turn;
    imuInit();
 
    //drive::init();
-   turn.init(1.0,0.0,0.0, 127, orientationGet, driveTurn);
+   turn.init(10.3517, 0.0, 780.7008, 127, orientationGet, driveTurn);
+   //58.6151, 0.2339, 3286.3
 }
