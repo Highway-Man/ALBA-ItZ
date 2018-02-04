@@ -39,22 +39,22 @@
 #include "PID.hpp"
 #include "imu.h"
 
-void calibrateIMU(){
+void calibratePID(Pid obj){
 	for(int i=0;i<2000;i+=10){
-		turn.calc();
-		printf("%f;", turn.position);
+		obj.calc();
+		printf("%f;", obj.position);
 		delay(10);
 	}
-	driveTurn(88);
+	driveForward(100);
 	for(int i=0;i<2000;i+=10){
-		turn.calc();
-		printf("%f;", turn.position);
+		obj.calc();
+		printf("%f;", obj.position);
 		delay(10);
 	}
-	driveTurn(37);
+	driveForward(0);
 	for(int i=0;i<2000;i+=10){
-		turn.calc();
-		printf("%f;", turn.position);
+		obj.calc();
+		printf("%f;", obj.position);
 		delay(10);
 	}
 
@@ -72,15 +72,13 @@ void calibrateIMU(){
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
-	//calibrateIMU();
-	turn.moveTo(90,15);
-	//scoreMobileGoal();
+	//calibratePID(drive);
+	//turn.moveTo(90,1);
+	drive.moveTo(-24, 1);
 	//autonomous();
 	arm.height=0;
 	arm.bottom=0;
 	updateArmTarget();
-	//prepChainbar();
-	//autonomous();
 	while (true) {
 		//set drive motors with a deadband of 5
 		if (abs(L_JOY) > 9)
@@ -184,7 +182,7 @@ void operatorControl() {
 
 		//print encoder value to terminal
 		turn.calc();
-		//printf("%f, ", turn.error);
+		printf("%f, ",drive.error);
 
 		delay(20);
 	}

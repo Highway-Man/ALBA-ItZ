@@ -38,6 +38,7 @@
 #include "PID.hpp"
 #include "subsystems.h"
 #include "imu.h"
+#include "encoder.hpp"
 
  /**
   * Runs pre-initialization code.
@@ -64,15 +65,18 @@ void initializeIO() {
  * This function must exit relatively promptly, or the operatorControl() and autonomous() tasks will not start. An autonomous mode selection menu like the pre_auton() in other environments can be implemented in this task if desired.
  */
 Encoder armEnc;
+Encoder driveEnc;
 Pid drive;
 Pid turn;
 
 
  void initialize() {
 	 armEnc = encoderInit(1,2,false);
+   driveEnc = encoderInit(5,6,false);
    imuInit();
 
    //drive::init();
    turn.init(10.3517, 0.0, 780.7008, 127, orientationGet, driveTurn);
    //58.6151, 0.2339, 3286.3
+   drive.init(37.5602,0.0,1803.5175, 127, inchesGet, driveForward);
 }

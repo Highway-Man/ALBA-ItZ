@@ -133,8 +133,9 @@ void initialize();
  */
 void operatorControl();
 
-#define encRead	encoderGet(armEnc)
 extern Encoder armEnc;
+extern Encoder driveEnc;
+
 
 //Motor Port Enumeration (eg port1: aft left Drive)
 typedef enum {

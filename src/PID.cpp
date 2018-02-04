@@ -46,7 +46,7 @@ void Pid::moveTo(float tar, float thresh){
     calc();
     set(control);
     if(i>4){
-      printf("%f, %f, %d\n", error, derivative, control);
+      //printf("%f, %f, %d\n", error, derivative, control);
       i=0;
     }
     delay(delayTime);
