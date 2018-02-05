@@ -133,8 +133,10 @@ void driveSet(int left, int right){
 
 //wait for lift to be within 10 ticks of target
 void waitForLift(int target, int margin){
-	while(abs(encoderGet(armEnc) - target) > margin)
+	while(abs(encoderGet(armEnc) - target) > margin){
+		positionController();
 		delay(20);
+	}
 }
 
 void positionController(){
@@ -146,6 +148,7 @@ void positionController(){
 		arm.P = 110*arm.P/abs(arm.P);
 	chainbarControl(arm.P);
 }
+
 int gTarget;
 void liftTask(void * parameter){
 	while(1){
@@ -158,7 +161,7 @@ void liftTask(void * parameter){
 }
 
 void moveLift(int target, int margin){
-	gTarget = target;
+	arm.target= target;
 	waitForLift(target, margin);
 }
 
@@ -167,7 +170,7 @@ void moveFourbar(int up){
 		fourbarSet(127);
 	else
 		fourbarSet(-127);
-	delay(700);
+	delay(900);
 	if(up)
 		fourbarSet(5);
 	else

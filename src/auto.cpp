@@ -110,7 +110,92 @@ void driveStr8(){
 	driveSet(127,127);
 	delay(6000);
 	driveSet(0,0);
+}
 
+void progSkills(){
+	while(powerLevelMain() < 6.0){
+		delay(25);
+	}
+	clawSet(127);
+	delay(200);
+	clawSet(10);
+	chainbarSet(-50);
+	delay(700);
+	chainbarSet(-10);
+	closeGate(0);
+	moveFourbar(0);
+	drive.moveBeyond(-46.0, 2.0);
+	driveSet(-10, -10);
+	moveFourbar(1);
+	closeGate(1);
+	delay(100);
+	turn.moveToUntil(0.0, 1.0, 1000);
+	chainbarSet(40);
+	delay(500);
+	clawSet(-127);
+	chainbarSet(-50);
+	delay(500);
+	chainbarSet(-10);
+	clawSet(0);
+	drive.moveTo(-3.0, 0.5);
+	turn.moveTo(45.0, 1.0);
+	encZero();
+	drive.moveTo(23.0, 0.5);
+	turn.moveTo(135.0, 1.0);
+	drive.moveFor(-127,1500);
+	driveSet(-10,-10);
+	closeGate(0);
+	moveFourbar(0);
+	encZero();
+	drive.moveFor(80,100);
+	moveFourbar(1);
+	closeGate(1);
+	drive.moveFor(-127,500);
+	drive.moveFor(0, 100);
+	drive.moveWhile(80, 17.0, 1.0, 1500);
+	driveSet(0, 0);
+	delay(200);
+	drive.moveFor(-30,1500);
+	encZero();
+	/////////////////////////////////////////
+	imuZero();
+	drive.moveToUntil(2.0, 0.2, 1000);
+	turn.moveToUntil(45.0-135.0, 1.0, 3000);
+	drive.moveFor(70, 500);
+	drive.moveFor(20, 2000);
+	encZero();
+	drive.moveTo(-2.0, 0.5);
+	turn.moveToUntil(45.0-135.0, 1.0, 1000);
+	drive.moveTo(-21.0, 0.5);
+	turn.moveToUntil(90.0-135.0, 1.0, 3000);
+	encZero();
+	drive.moveTo(48.0, 1.0);
+	turn.moveToUntil(90.0-135.0, 1.0, 1000);
+	drive.moveToUntil(78.0, 1.0, 4000);
+	turn.moveToUntil(30.0-135.0, 1.0, 2000);
+	drive.moveTo(66.0, 1.0);
+	turn.moveToUntil(180.0-135.0, 1.0, 3000);
+	encZero();
+	drive.moveToUntil(4.0, 1.0, 1000);
+	//turn.moveToUntil(135.1-135.0, 1.0, 1000);
+	closeGate(0);
+	moveFourbar(0);
+	drive.moveBeyond(-20.0, 2.0);
+	driveSet(-10, -10);
+	moveFourbar(1);
+	closeGate(1);
+	delay(100);
+	drive.moveTo(-12, 4.0);
+	turn.moveTo(90.0-135.0, 1.0);
+	drive.moveToUntil(-60.0, 4.0, 3000);
+	drive.moveFor(-30, 2000);
+	turn.moveToUntil(135.0-135.0, 3.0, 1000);
+	drive.moveFor(-30, 500);
+	closeGate(0);
+	moveFourbar(0);
+	drive.moveFor(127, 200);
+	moveFourbar(1);
+	closeGate(1);
 }
 
 /**
@@ -123,6 +208,5 @@ void driveStr8(){
 * The autonomous task may exit, unlike operatorControl() which should never exit. If it does so, the robot will await a switch to another mode or disable/enable cycle.
 */
 void autonomous() {
-	scoreMobileGoal();
-	driveStr8();
+	progSkills();
 }

@@ -360,6 +360,7 @@ double imuGet(){
   return heading;
 }
 
+double gOffset=0.0;
 double orientationGet(){
 	static double angle;
 	static double angleLast = 0;
@@ -372,5 +373,9 @@ double orientationGet(){
 		offset += 360;
 	}
 	angleLast = angle;
-	return angle+offset;
+	return angle+offset-gOffset;
+}
+
+void imuZero(){
+	gOffset = orientationGet();
 }

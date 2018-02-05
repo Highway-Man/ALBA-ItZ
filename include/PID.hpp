@@ -33,7 +33,10 @@ public:
   void calc(void);
   void set(short value);
   void moveTo(float tar, float thresh);
+  void moveBeyond(float tar, float thresh);
   void moveToUntil(float tar, float thresh, int ms);
+  void moveFor(int speed, int ms);
+  void moveWhile(int speed, float tar, float thresh, int ms);
 
 };
 extern Pid turn;

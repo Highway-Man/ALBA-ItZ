@@ -74,8 +74,8 @@ void calibratePID(Pid obj){
 void operatorControl() {
 	//calibratePID(drive);
 	//turn.moveTo(90,1);
-	drive.moveTo(-24, 1);
-	//autonomous();
+	//drive.moveTo(-24, 1);
+	autonomous();
 	arm.height=0;
 	arm.bottom=0;
 	updateArmTarget();

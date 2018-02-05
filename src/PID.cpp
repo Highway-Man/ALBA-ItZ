@@ -53,16 +53,63 @@ void Pid::moveTo(float tar, float thresh){
     i++;
   }
 }
+void Pid::moveBeyond(float tar, float thresh){
+  target = tar;
+  calc();
+  int i=0;
+  while(fabs(error) > thresh){
+    calc();
+    set(control);
+    if(i>10){
+      printf("%f, %f, %d\n", error, derivative, control);
+      i=0;
+    }
+    delay(delayTime);
+    i++;
+  }
+}
+
 void Pid::moveToUntil(float tar, float thresh, int ms){
   long timeElapsed, timeStarted;
   target = tar;
   calc();
   timeStarted = millis();
   timeElapsed = millis() - timeStarted;
-  while(error < thresh && timeElapsed < ms){
+  while((fabs(error) > thresh || fabs(velocity) > 0.001) && timeElapsed < ms){
     calc();
     set(control);
     timeElapsed = millis() - timeStarted;
     delay(delayTime);
   }
+}
+
+void Pid::moveFor(int speed, int ms){
+  long timeElapsed, timeStarted;
+  set(speed);
+  delay(200);
+  timeStarted = millis();
+  timeElapsed = millis() - timeStarted;
+  calc();
+  while(timeElapsed < ms && fabs(velocity) > 0.001){
+    calc();
+    timeElapsed = millis() - timeStarted;
+    delay(delayTime);
+  }
+  set(2*sign(speed));
+}
+
+void Pid::moveWhile(int speed, float tar, float thresh, int ms){
+  long timeElapsed, timeStarted;
+  set(speed);
+  target = tar;
+  delay(100);
+  timeStarted = millis();
+  timeElapsed = millis() - timeStarted;
+  calc();
+  while(timeElapsed < ms && fabs(error) > thresh){
+    calc();
+    timeElapsed = millis() - timeStarted;
+    delay(delayTime);
+  }
+  set(2*sign(speed));
 }
