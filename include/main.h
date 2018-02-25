@@ -135,9 +135,12 @@ void operatorControl();
 
 extern Encoder armEnc;
 extern Encoder driveEnc;
+extern Gyro gyro;
 
-void encZero();
+void encZero(float newCurrent);
 void imuZero();
+void gyroZero(double newCurrent);
+
 
 //Motor Port Enumeration (eg port1: aft left Drive)
 typedef enum {

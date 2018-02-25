@@ -2,5 +2,6 @@
 #define _ENCODER_H
 
 double inchesGet();
+double degreesGet();
 
 #endif

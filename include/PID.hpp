@@ -3,11 +3,8 @@
 
 class Pid{
 private:
-const short delayTime = 10;
-double dt, t, pTime;
 double (*input)(void);
 void (*output)(short);
-short controlLast, slewRate;
 public:
   const unsigned short lin[128] = {
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -29,7 +26,7 @@ public:
   float target;
   double position, velocity;
   short deltaMax, control;
-  void init(float P, float D, float I, short dMax, double (*sensor)(void), void (*motors)(short));
+  void init(float P, float D, float I, short dMax, int dT, double (*sensor)(void), void (*motors)(short));
   void calc(void);
   void set(short value);
   void moveTo(float tar, float thresh);
@@ -37,9 +34,12 @@ public:
   void moveToUntil(float tar, float thresh, int ms);
   void moveFor(int speed, int ms);
   void moveWhile(int speed, float tar, float thresh, int ms);
+  void stack(int height, int ret);
 
 };
 extern Pid turn;
 extern Pid drive;
+extern Pid lift;
+
 
 #endif

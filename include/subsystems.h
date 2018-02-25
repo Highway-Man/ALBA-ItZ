@@ -6,7 +6,7 @@ void lDriveSet(short control);
 void rDriveSet(short control);
 void driveForward(short control);
 void driveTurn(short control);
-void chainbarSet(int control);
+void chainbarSet(short control);
 void fourbarSet(int control);
 void clawSet(int control);
 void chainbarControl(int target);
@@ -40,6 +40,7 @@ void driveSet(int left, int right);
 void positionController();
 extern int gTarget;
 void liftTask(void * parameter);
+void waitForLift(int target, int margin);
 
 void moveLift(int target, int margin);
 void moveFourbar(int up);

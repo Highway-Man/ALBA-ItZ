@@ -38,6 +38,7 @@
 #include "PID.hpp"
 #include "subsystems.h"
 #include "imu.h"
+#include "gyro.hpp"
 #include "encoder.hpp"
 
  /**
@@ -66,17 +67,24 @@ void initializeIO() {
  */
 Encoder armEnc;
 Encoder driveEnc;
+Gyro gyro;
 Pid drive;
 Pid turn;
+Pid lift;
 
 
  void initialize() {
 	 armEnc = encoderInit(1,2,false);
    driveEnc = encoderInit(5,6,false);
    imuInit();
+   delay(1000);
+   gyro=gyroInit(1,0);
 
    //drive::init();
-   turn.init(10.3517, 0.0, 780.7008, 127, orientationGet, driveTurn);
+   turn.init(5.4353, 0.0, 305.2414, 127, 25, gyroRead, driveTurn);
    //58.6151, 0.2339, 3286.3
-   drive.init(37.5602,0.0,1803.5175, 127, inchesGet, driveForward);
+   drive.init(37.5602,0.0,1803.5175, 127, 10, inchesGet, driveForward);
+
+   lift.init(1.25,0.0,0.0,25,10, degreesGet, chainbarSet);
+   delay(10000);
 }

@@ -28,7 +28,7 @@ void lDriveBrake(){
 void rDriveBrake(){
 	motorSet(rDrive, -12);
 }
-void chainbarSet(int control) {
+void chainbarSet(short control) {
 	motorSet(olArm, -control);
 	motorSet(ilArm, control);
 	motorSet(orArm, control);
@@ -133,6 +133,7 @@ void driveSet(int left, int right){
 
 //wait for lift to be within 10 ticks of target
 void waitForLift(int target, int margin){
+	arm.target = target;
 	while(abs(encoderGet(armEnc) - target) > margin){
 		positionController();
 		delay(20);
@@ -174,7 +175,7 @@ void moveFourbar(int up){
 	if(up)
 		fourbarSet(5);
 	else
-		fourbarSet(-10);
+		fourbarSet(-13);
 }
 
 void moveClaw(int close){

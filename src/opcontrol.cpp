@@ -40,22 +40,22 @@
 #include "imu.h"
 
 void calibratePID(Pid obj){
-	for(int i=0;i<2000;i+=10){
+	for(int i=0;i<1000;i+=25){
 		obj.calc();
 		printf("%f;", obj.position);
-		delay(10);
+		delay(25);
 	}
-	driveForward(100);
-	for(int i=0;i<2000;i+=10){
+	driveTurn(100);
+	for(int i=0;i<1000;i+=25){
 		obj.calc();
 		printf("%f;", obj.position);
-		delay(10);
+		delay(25);
 	}
-	driveForward(0);
-	for(int i=0;i<2000;i+=10){
+	driveTurn(0);
+	for(int i=0;i<1000;i+=25){
 		obj.calc();
 		printf("%f;", obj.position);
-		delay(10);
+		delay(25);
 	}
 
 }
@@ -72,10 +72,13 @@ void calibratePID(Pid obj){
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
-	//calibratePID(drive);
-	//turn.moveTo(90,1);
+	while(powerLevelMain() < 6.0){
+		delay(25);
+	}
+	//calibratePID(turn);
+	//turn.moveTo(90,2);
 	//drive.moveTo(-24, 1);
-	autonomous();
+	//autonomous();
 	arm.height=0;
 	arm.bottom=0;
 	updateArmTarget();
@@ -182,7 +185,12 @@ void operatorControl() {
 
 		//print encoder value to terminal
 		turn.calc();
-		printf("%f, ",drive.error);
+		// static int j=0;
+		// if(j>50){
+		//printf("%f, \n",turn.position);
+		// 	j=0;
+		// }
+		// j++;
 
 		delay(20);
 	}

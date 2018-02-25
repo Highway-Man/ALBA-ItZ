@@ -2,8 +2,12 @@
 #include "PID.hpp"
 #include "main.h"
 #include "math.h"
+#include "subsystems.h"
 
-void Pid::init(float P, float I, float D, short dMax, double (*sensor)(void), void (*motors)(short)){
+int delayTime;
+int pTime, t, dt, slewRate, controlLast;
+
+void Pid::init(float P, float I, float D, short dMax, int dT, double (*sensor)(void), void (*motors)(short)){
   kP = P;
   kD = D;
   kI = I;
@@ -13,6 +17,7 @@ void Pid::init(float P, float I, float D, short dMax, double (*sensor)(void), vo
   integral = 0.0;
   output = motors;
   deltaMax = dMax;
+  delayTime=dT;
 }
 void Pid::calc(void){
   position = input();
@@ -56,17 +61,18 @@ void Pid::moveTo(float tar, float thresh){
 void Pid::moveBeyond(float tar, float thresh){
   target = tar;
   calc();
-  int i=0;
+  int i=0, dir=sign(control);
   while(fabs(error) > thresh){
     calc();
     set(control);
     if(i>10){
-      printf("%f, %f, %d\n", error, derivative, control);
+      //printf("%f, %f, %d\n", error, derivative, control);
       i=0;
     }
     delay(delayTime);
     i++;
   }
+  output(dir*10);
 }
 
 void Pid::moveToUntil(float tar, float thresh, int ms){
@@ -75,11 +81,13 @@ void Pid::moveToUntil(float tar, float thresh, int ms){
   calc();
   timeStarted = millis();
   timeElapsed = millis() - timeStarted;
+  delay(20);
   while((fabs(error) > thresh || fabs(velocity) > 0.001) && timeElapsed < ms){
     calc();
     set(control);
     timeElapsed = millis() - timeStarted;
-    delay(delayTime);
+    printf("%f, \n", position);
+    delay(20);
   }
 }
 
@@ -92,6 +100,7 @@ void Pid::moveFor(int speed, int ms){
   calc();
   while(timeElapsed < ms && fabs(velocity) > 0.001){
     calc();
+    set(speed);
     timeElapsed = millis() - timeStarted;
     delay(delayTime);
   }
@@ -108,8 +117,60 @@ void Pid::moveWhile(int speed, float tar, float thresh, int ms){
   calc();
   while(timeElapsed < ms && fabs(error) > thresh){
     calc();
+    set(speed);
     timeElapsed = millis() - timeStarted;
     delay(delayTime);
   }
   set(2*sign(speed));
+}
+
+void Pid::stack(int height, int ret){
+  clawSet(10);
+  int prev = target;
+  if (height == 1)
+    target = 280;//840
+  else if (height == 2)
+    target = 265;//800
+  else if (height == 3)
+    target = 250;//775
+  else if (height == 4)
+    target = 240;//745
+  else if (height == 5)
+    target = 230;//700
+  else if (height == 6)
+    target = 220;//640
+  else if (height == 7)
+    target = 212;//600
+  else if (height == 8)
+    target = 200;//600
+  calc();
+  //890, 850, 810, 785, 765, 750, 733, 670,
+  while(fabs(error > 10)){
+    calc();
+    set(control);
+    delay(delayTime);
+  }
+  clawSet(-127);
+  for(int i=0; i<12;i++){
+    calc();
+    set(control);
+    delay(delayTime);
+  }
+  if(ret == 1){
+      target=prev;
+    calc();
+    while (fabs(error) > 90) {
+      calc();
+      set(control);
+      delay(delayTime);
+    }
+    clawSet(127);
+    moveBeyond(target, 10);
+  }
+  else{
+    target = 190;
+    moveToUntil(target, 20, 1000);
+    clawSet(0);
+    chainbarSet(-10);
+  }
 }

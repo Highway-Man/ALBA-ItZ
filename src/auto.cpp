@@ -139,14 +139,14 @@ void progSkills(){
 	clawSet(0);
 	drive.moveTo(-3.0, 0.5);
 	turn.moveTo(45.0, 1.0);
-	encZero();
+	encZero(0.0);
 	drive.moveTo(23.0, 0.5);
 	turn.moveTo(135.0, 1.0);
 	drive.moveFor(-127,1500);
 	driveSet(-10,-10);
 	closeGate(0);
 	moveFourbar(0);
-	encZero();
+	encZero(0.0);
 	drive.moveFor(80,100);
 	moveFourbar(1);
 	closeGate(1);
@@ -156,26 +156,26 @@ void progSkills(){
 	driveSet(0, 0);
 	delay(200);
 	drive.moveFor(-30,1500);
-	encZero();
+	encZero(0.0);
 	/////////////////////////////////////////
 	imuZero();
 	drive.moveToUntil(2.0, 0.2, 1000);
 	turn.moveToUntil(45.0-135.0, 1.0, 3000);
 	drive.moveFor(70, 500);
 	drive.moveFor(20, 2000);
-	encZero();
+	encZero(0.0);
 	drive.moveTo(-2.0, 0.5);
 	turn.moveToUntil(45.0-135.0, 1.0, 1000);
 	drive.moveTo(-21.0, 0.5);
 	turn.moveToUntil(90.0-135.0, 1.0, 3000);
-	encZero();
+	encZero(0.0);
 	drive.moveTo(48.0, 1.0);
 	turn.moveToUntil(90.0-135.0, 1.0, 1000);
 	drive.moveToUntil(78.0, 1.0, 4000);
 	turn.moveToUntil(30.0-135.0, 1.0, 2000);
 	drive.moveTo(66.0, 1.0);
 	turn.moveToUntil(180.0-135.0, 1.0, 3000);
-	encZero();
+	encZero(0.0);
 	drive.moveToUntil(4.0, 1.0, 1000);
 	//turn.moveToUntil(135.1-135.0, 1.0, 1000);
 	closeGate(0);
@@ -198,6 +198,107 @@ void progSkills(){
 	closeGate(1);
 }
 
+int encOffset=292;
+void auton(int stationary){
+
+	// clawSet(127);
+	// lift.moveTo(60, 10);
+	// lift.stack(1);
+	while(powerLevelMain() < 6.0){
+		delay(25);
+	}
+	clawSet(127);
+	chainbarSet(-50);
+	delay(600);
+	clawSet(15);
+	chainbarSet(-10);
+	if(stationary){
+		drive.moveTo(3.0, 1.0);
+		lift.moveBeyond(100.0, 20.0);
+		clawSet(-127);
+		delay(200);
+		lift.moveToUntil(230.0, 20.0, 2000);
+		chainbarSet(10);
+		clawSet(0);
+		turn.moveToUntil(-90.0, 5.0, 2000);
+		drive.moveBeyond(-19.0, 2.0);
+		turn.moveToUntil(-135.0,5.0, 2500);
+		delay(20);
+		imuZero();
+		gyroZero(0.0);
+		encZero(0.0);
+		delay(500);
+	}
+
+
+	closeGate(0);
+	moveFourbar(0);
+	drive.moveBeyond(-40.0, 2.0);
+	fourbarSet(-127);
+	delay(200);
+	fourbarSet(-12);
+	drive.moveBeyond(-50.0,2.0);
+	moveFourbar(1);
+	closeGate(1);
+	delay(100);
+	if(!stationary){
+		chainbarSet(40);
+		turn.moveToUntil(0.0, 3.0, 500);
+		clawSet(-127);
+		chainbarSet(-50);
+		delay(500);
+		chainbarSet(-10);
+		clawSet(0);
+	}
+
+	//turn.moveToUntil(0.0,5.0,1000);
+	lift.moveToUntil(230.0, 20.0, 2000);
+	drive.moveToUntil(-30.0, 0.5, 2000);
+	turn.moveToUntil(-85.0, 3.0, 1000);
+	drive.moveFor(127, 2000);
+	encZero(0.0);
+	gyroZero(-90.0);
+	drive.moveWhile(-80, -19.0, 1.0, 2000);
+	drive.moveTo(-17.3, 1.0);
+	brakeSet(50);
+	clawSet(127);
+	lift.moveBeyond(50, 10);
+	brakeSet(10);
+	clawSet(10);
+	lift.stack(2,1);
+	lift.stack(3,1);
+	lift.stack(4,1);
+	lift.stack(5,1);
+	lift.stack(6, 1);
+	lift.stack(6,1);
+	lift.stack(7,0);
+
+	brakeSet(-127);
+	delay(200);
+	drive.moveToUntil(-4.0, 1.0, 2000);
+	turn.moveToUntil(0.0, 3.0, 2000);
+
+	drive.moveToUntil(27.0, 1.0,2000);
+	turn.moveToUntil(45.0, 3.0,2000);
+	encZero(0.0);
+	drive.moveToUntil(23.0, 1.0,2000);
+	turn.moveTo(135.0, 3.0);
+	drive.moveFor(-127,1500);
+	driveSet(-10,-10);
+	closeGate(0);
+	moveFourbar(0);
+	drive.moveFor(-127,200);
+	drive.moveFor(127,200);
+	moveFourbar(1);
+	drive.moveFor(127,500);
+	// drive.moveFor(0, 100);
+	// drive.moveWhile(80, 17.0, 1.0, 1500);
+	// driveSet(0, 0);
+	// delay(200);
+	// drive.moveFor(-30,1500);
+	// encZero(0.0);
+}
+
 /**
 * Runs the user autonomous code.
 *
@@ -208,5 +309,15 @@ void progSkills(){
 * The autonomous task may exit, unlike operatorControl() which should never exit. If it does so, the robot will await a switch to another mode or disable/enable cycle.
 */
 void autonomous() {
-	progSkills();
+	// turn.moveToUntil(0.0,1.0,500);
+	// driveTurn(0);
+	// clawSet(-127);
+	// chainbarSet(-50);
+	// delay(500);
+	// chainbarSet(-10);
+	// clawSet(0);
+	// drive.moveTo(10.0, 0.5);
+	// drive.moveTo(0.0,0.5);
+	// turn.moveToUntil(-90.0, 1.0,1000);
+	auton(1);
 }
