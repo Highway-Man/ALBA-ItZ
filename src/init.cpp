@@ -53,7 +53,12 @@ void initializeIO() {
   pinMode(4, OUTPUT);
   digitalWrite(3,LOW);
   digitalWrite(4,LOW);
-
+  pinMode(9,OUTPUT);
+  pinMode(8,OUTPUT);
+  digitalWrite(9,LOW);
+  digitalWrite(8,LOW);
+  pinMode(11,INPUT);
+  pinMode(12,INPUT);
 }
 
 /**
@@ -86,5 +91,20 @@ Pid lift;
    drive.init(37.5602,0.0,1803.5175, 127, 10, inchesGet, driveForward);
 
    lift.init(1.25,0.0,0.0,25,10, degreesGet, chainbarSet);
-   delay(10000);
+   //delay(10000);
+   while(!isEnabled()){
+      if(!digitalRead(11)){
+         digitalWrite(9,HIGH);
+         digitalWrite(8,LOW);
+      }
+      else if(!digitalRead(12)){
+        digitalWrite(9,LOW);
+        digitalWrite(8,HIGH);
+      }
+      else{
+        digitalWrite(9,LOW);
+        digitalWrite(8,LOW);
+      }
+
+   }
 }

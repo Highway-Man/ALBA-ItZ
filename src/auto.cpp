@@ -222,7 +222,7 @@ void auton(int stationary){
 		clawSet(0);
 		turn.moveToUntil(-90.0, 5.0, 2000);
 		drive.moveBeyond(-19.0, 2.0);
-		turn.moveToUntil(-135.0,5.0, 2500);
+		turn.moveTo(-135.0,1.0);
 		delay(20);
 		imuZero();
 		gyroZero(0.0);
@@ -232,6 +232,7 @@ void auton(int stationary){
 
 
 	closeGate(0);
+	//while(1);
 	moveFourbar(0);
 	drive.moveBeyond(-40.0, 2.0);
 	fourbarSet(-127);
@@ -270,21 +271,26 @@ void auton(int stationary){
 	lift.stack(4,1);
 	lift.stack(5,1);
 	lift.stack(6, 1);
-	lift.stack(6,1);
+	if(stationary)
+		lift.stack(6,1);
 	lift.stack(7,0);
 
 	brakeSet(-127);
 	delay(200);
 	drive.moveToUntil(-4.0, 1.0, 2000);
-	turn.moveToUntil(0.0, 3.0, 2000);
+	turn.moveToUntil(0.0+5.0, 3.0, 2000);
 
 	drive.moveToUntil(27.0, 1.0,2000);
-	turn.moveToUntil(45.0, 3.0,2000);
+	turn.moveToUntil(45.0+5.0, 3.0,2000);
 	encZero(0.0);
 	drive.moveToUntil(23.0, 1.0,2000);
-	turn.moveTo(135.0, 3.0);
+	lift.moveToUntil(190, 20, 1000);
+	chainbarSet(-10);
+	turn.moveToUntil(135.0+10.0, 3.0,2000);
+	delay(500);
 	drive.moveFor(-127,1500);
 	driveSet(-10,-10);
+	delay(500);
 	closeGate(0);
 	moveFourbar(0);
 	drive.moveFor(-127,200);
@@ -319,5 +325,5 @@ void autonomous() {
 	// drive.moveTo(10.0, 0.5);
 	// drive.moveTo(0.0,0.5);
 	// turn.moveToUntil(-90.0, 1.0,1000);
-	auton(1);
+	auton(0);
 }
