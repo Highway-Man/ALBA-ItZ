@@ -112,9 +112,9 @@ void updateArmTarget() {
 void checkStackRelease() {
 	static int waitGoDown = 0;
 	//890, 850, 810, 785, 765, 750, 733, 670,
-	if (arm.error < 30 && arm.target > 100) {
+	if (arm.error < 10 && arm.target > 100) {
 		clawPosition = 0;
-		if(waitGoDown>3){
+		if(waitGoDown>6){
 			waitGoDown=0;
 			if(arm.bottom == 0)
 				arm.target = -10;

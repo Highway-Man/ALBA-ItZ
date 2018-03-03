@@ -77,6 +77,7 @@ Pid drive;
 Pid turn;
 Pid lift;
 
+int color = 1;
 
  void initialize() {
 	 armEnc = encoderInit(1,2,false);
@@ -91,19 +92,23 @@ Pid lift;
    drive.init(37.5602,0.0,1803.5175, 127, 10, inchesGet, driveForward);
 
    lift.init(1.25,0.0,0.0,25,10, degreesGet, chainbarSet);
+
    //delay(10000);
    while(!isEnabled()){
       if(!digitalRead(11)){
          digitalWrite(9,HIGH);
          digitalWrite(8,LOW);
+         color= -1;
       }
       else if(!digitalRead(12)){
         digitalWrite(9,LOW);
         digitalWrite(8,HIGH);
+        color=1;
       }
       else{
         digitalWrite(9,LOW);
         digitalWrite(8,LOW);
+        color=1;
       }
 
    }

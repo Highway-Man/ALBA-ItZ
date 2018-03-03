@@ -199,7 +199,7 @@ void progSkills(){
 }
 
 int encOffset=292;
-void auton(int stationary){
+void auton(int stationary, int col){
 
 	// clawSet(127);
 	// lift.moveTo(60, 10);
@@ -254,13 +254,13 @@ void auton(int stationary){
 
 	//turn.moveToUntil(0.0,5.0,1000);
 	lift.moveToUntil(230.0, 20.0, 2000);
-	drive.moveToUntil(-30.0, 0.5, 2000);
-	turn.moveToUntil(-85.0, 3.0, 1000);
+	drive.moveToUntil(-33.0, 0.5, 2000);
+	turn.moveToUntil(-85.0*col, 3.0, 1000);
 	drive.moveFor(127, 2000);
 	encZero(0.0);
-	gyroZero(-90.0);
+	gyroZero(-90.0*col);
 	drive.moveWhile(-80, -19.0, 1.0, 2000);
-	drive.moveTo(-17.3, 1.0);
+	drive.moveTo(-18.0, 1.0);
 	brakeSet(50);
 	clawSet(127);
 	lift.moveBeyond(50, 10);
@@ -278,19 +278,20 @@ void auton(int stationary){
 	brakeSet(-127);
 	delay(200);
 	drive.moveToUntil(-4.0, 1.0, 2000);
-	turn.moveToUntil(0.0+5.0, 3.0, 2000);
+	turn.moveToUntil((0.0+10.0)*col, 3.0, 2000);
 
 	drive.moveToUntil(27.0, 1.0,2000);
-	turn.moveToUntil(45.0+5.0, 3.0,2000);
+	turn.moveToUntil((45.0+5.0)*col, 3.0,2000);
 	encZero(0.0);
-	drive.moveToUntil(23.0, 1.0,2000);
+	drive.moveToUntil(30.0, 1.0,2000);
 	lift.moveToUntil(190, 20, 1000);
 	chainbarSet(-10);
-	turn.moveToUntil(135.0+10.0, 3.0,2000);
-	delay(500);
-	drive.moveFor(-127,1500);
+	turn.moveToUntil((135.0+10.0)*col, 3.0,2000);
+	delay(1000);
+	drive.moveFor(-70,500);
+	drive.moveFor(-127,1000);
 	driveSet(-10,-10);
-	delay(500);
+	delay(1000);
 	closeGate(0);
 	moveFourbar(0);
 	drive.moveFor(-127,200);
@@ -325,5 +326,5 @@ void autonomous() {
 	// drive.moveTo(10.0, 0.5);
 	// drive.moveTo(0.0,0.5);
 	// turn.moveToUntil(-90.0, 1.0,1000);
-	auton(0);
+	auton(0, color);
 }

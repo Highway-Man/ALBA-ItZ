@@ -130,7 +130,7 @@ void Pid::stack(int height, int ret){
   if (height == 1)
     target = 280;//840
   else if (height == 2)
-    target = 265;//800
+    target = 250;//800
   else if (height == 3)
     target = 250;//775
   else if (height == 4)

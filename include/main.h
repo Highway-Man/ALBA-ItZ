@@ -176,7 +176,7 @@ typedef enum {
 
 
 
-
+extern int color;
 //auton routines
 void standardAuton(void);
 void scoreMobileGoal(void);
